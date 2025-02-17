@@ -163,11 +163,11 @@ namespace fsManager
             {
                 SYSTEMTIME stCreation;
                 FileTimeToSystemTime(&fileinfo.ftCreationTime, &stCreation);
-                std::cout << "Creation time: " << stCreation.wDay << "/" << stCreation.wMonth << "/" << stCreation.wYear << " " << stCreation.wHour << ":" << stCreation.wMinute << std::endl;
+                std::cout << "Creation time: " << stCreation.wDay << "/" << stCreation.wMonth << "/" << stCreation.wYear << " " << stCreation.wHour + 3 << ":" << stCreation.wMinute << std::endl;
 
                 SYSTEMTIME stLastWrite;
                 FileTimeToSystemTime(&fileinfo.ftLastWriteTime, &stLastWrite);
-                std::cout << "Last write time: " << stLastWrite.wDay << "/" << stLastWrite.wMonth << "/" << stLastWrite.wYear << " " << stLastWrite.wHour << ":" << stLastWrite.wMinute << std::endl;
+                std::cout << "Last write time: " << stLastWrite.wDay << "/" << stLastWrite.wMonth << "/" << stLastWrite.wYear << " " << stLastWrite.wHour + 3 << ":" << stLastWrite.wMinute << std::endl;
 
                 std::cout << "Number of links: " << fileinfo.nNumberOfLinks << std::endl;
             }
