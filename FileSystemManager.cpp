@@ -58,7 +58,7 @@ namespace fsManager
         char NameBuffer[MAX_PATH];
         DWORD serial;
         char fsName[MAX_PATH];
-
+        // fixme добавить вывод системных флагов
         GetVolumeInformationA(driveName.c_str(), NameBuffer, MAX_PATH, &serial, NULL, NULL, fsName, MAX_PATH);
 
         printf("Volume name: %s\n", NameBuffer);

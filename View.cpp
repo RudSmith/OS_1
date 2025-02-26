@@ -132,17 +132,17 @@ void View::moveF()
     if(FileSystemManager::MoveFile_(pathSrc, pathDst) == 0)
         std::cout << "Файл успешно перемещён" << std::endl;
     else
-        std::cout << "Ошибка при перемещении файла" << std::endl;
+        std::cout << "Ошибка при перемещении файла:" << GetLastError() << std::endl;
 }
 
 void View::copyF()
 {
     std::filesystem::path pathSrc{};
-    std::cout << "Введите путь файла, который нужно копировать (используйте / или \\\\ в качестве разделителя):";
+    std::cout << "Введите путь файла, который нужно копировать (используйте \\\\ в качестве разделителя):";
     std::cin >> pathSrc;
 
     std::filesystem::path pathDst{};
-    std::cout << "Введите путь, куда файл будет копирован (включая имя файла!!!) (используйте / или \\\\ в качестве разделителя):";
+    std::cout << "Введите путь, куда файл будет копирован (включая имя файла!!!) (используйте \\\\ в качестве разделителя):";
     std::cin >> pathDst;
 
     if (FileSystemManager::CopyFile_(pathSrc, pathDst) == 0)
@@ -225,10 +225,10 @@ void View::setFileTime(int method)
     datetime.tm_year = year - 1900; // Number of years since 1900
     datetime.tm_mon = mon - 1; // Number of months since January
     datetime.tm_mday = day;
-    datetime.tm_hour = hour;
+    datetime.tm_hour = hour - 1;
     datetime.tm_min = min;
     datetime.tm_sec = sec;
-    datetime.tm_isdst = -1;
+    datetime.tm_isdst = 0;
 
     timestamp = mktime(&datetime);
 
