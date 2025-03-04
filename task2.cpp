@@ -9,13 +9,14 @@
 */
 
 #define _GNU_SOURCE
-#define MAX_OPERATIONS 10
+#define MAX_OPERATIONS 16
 #include <stdio.h>
 #include <stdlib.h>
 #include <aio.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <signal.h>
+#include <iostream>
 #include <string.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -23,6 +24,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <time.h>
+#include <chrono>
 
 // структура для хранения информации об асинхронной операции
 struct aio_operation 
@@ -40,6 +42,9 @@ off_t file_size; // размер файла
 size_t current_offset = 0; // сколько уже обработали байт
 int operations_in_progress = 0; // кол-во выполняющихся в данный момент асинхронных операций
 int read_complete = 0; // флаг завершения записи
+// таймеры
+std::chrono::_V2::system_clock::time_point start;
+std::chrono::_V2::system_clock::time_point end;
 
 // функция-обработчик завершения асинхронной операции
 void aio_completion_handler(sigval_t sigval) 
@@ -118,6 +123,10 @@ void aio_completion_handler(sigval_t sigval)
         printf("File copy completed successfully.\n");
         close(fd_read);
         close(fd_write);
+        end = std::chrono::system_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        printf("time passed: %llu \n", elapsed.count());
+        
         exit(0);
     }
 }
@@ -193,6 +202,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    start = std::chrono::system_clock::now();
     // Получение размера файла
     struct stat file_stat;
     fstat(fd_read, &file_stat);
