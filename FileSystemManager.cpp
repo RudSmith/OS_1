@@ -4,6 +4,51 @@
 
 namespace fsManager
 {
+    void FileSystemManager::PrintFlags(DWORD flags)
+    {
+        printf("Флаги файловой системы:\n");
+
+        if (flags & FILE_CASE_SENSITIVE_SEARCH)
+            printf("  - FILE_CASE_SENSITIVE_SEARCH: Файловая система поддерживает чувствительные к регистру имена файлов.\n");
+        if (flags & FILE_CASE_PRESERVED_NAMES)
+            printf("  - FILE_CASE_PRESERVED_NAMES: Файловая система сохраняет регистр имён файлов при записи на диск.\n");
+        if (flags & FILE_UNICODE_ON_DISK)
+            printf("  - FILE_UNICODE_ON_DISK: Файловая система поддерживает Unicode в именах файлов.\n");
+        if (flags & FILE_PERSISTENT_ACLS)
+            printf("  - FILE_PERSISTENT_ACLS: Файловая система поддерживает и применяет списки контроля доступа (ACL).\n");
+        if (flags & FILE_FILE_COMPRESSION)
+            printf("  - FILE_FILE_COMPRESSION: Файловая система поддерживает сжатие файлов.\n");
+        if (flags & FILE_VOLUME_QUOTAS)
+            printf("  - FILE_VOLUME_QUOTAS: Файловая система поддерживает квоты на диске.\n");
+        if (flags & FILE_SUPPORTS_SPARSE_FILES)
+            printf("  - FILE_SUPPORTS_SPARSE_FILES: Файловая система поддерживает разрежённые файлы.\n");
+        if (flags & FILE_SUPPORTS_REPARSE_POINTS)
+            printf("  - FILE_SUPPORTS_REPARSE_POINTS: Файловая система поддерживает точки повторного анализа (reparse points).\n");
+        if (flags & FILE_SUPPORTS_REMOTE_STORAGE)
+            printf("  - FILE_SUPPORTS_REMOTE_STORAGE: Файловая система поддерживает удалённое хранилище.\n");
+        if (flags & FILE_VOLUME_IS_COMPRESSED)
+            printf("  - FILE_VOLUME_IS_COMPRESSED: Указанный том является сжатым.\n");
+        if (flags & FILE_SUPPORTS_OBJECT_IDS)
+            printf("  - FILE_SUPPORTS_OBJECT_IDS: Файловая система поддерживает идентификаторы объектов.\n");
+        if (flags & FILE_SUPPORTS_ENCRYPTION)
+            printf("  - FILE_SUPPORTS_ENCRYPTION: Файловая система поддерживает шифрованную файловую систему (EFS).\n");
+        if (flags & FILE_NAMED_STREAMS)
+            printf("  - FILE_NAMED_STREAMS: Файловая система поддерживает именованные потоки.\n");
+        if (flags & FILE_READ_ONLY_VOLUME)
+            printf("  - FILE_READ_ONLY_VOLUME: Указанный том доступен только для чтения.\n");
+        if (flags & FILE_SEQUENTIAL_WRITE_ONCE)
+            printf("  - FILE_SEQUENTIAL_WRITE_ONCE: Файловая система поддерживает однократную последовательную запись.\n");
+        if (flags & FILE_SUPPORTS_TRANSACTIONS)
+            printf("  - FILE_SUPPORTS_TRANSACTIONS: Файловая система поддерживает транзакции.\n");
+        if (flags & FILE_SUPPORTS_HARD_LINKS)
+            printf("  - FILE_SUPPORTS_HARD_LINKS: Файловая система поддерживает жёсткие ссылки.\n");
+        if (flags & FILE_SUPPORTS_EXTENDED_ATTRIBUTES)
+            printf("  - FILE_SUPPORTS_EXTENDED_ATTRIBUTES: Файловая система поддерживает расширенные атрибуты.\n");
+        if (flags & FILE_SUPPORTS_OPEN_BY_FILE_ID)
+            printf("  - FILE_SUPPORTS_OPEN_BY_FILE_ID: Файловая система поддерживает открытие файлов по ID.\n");
+        if (flags & FILE_SUPPORTS_USN_JOURNAL)
+            printf("  - FILE_SUPPORTS_USN_JOURNAL: Файловая система поддерживает журналы USN (журналы обновления последовательных номеров).\n");
+    }
 
     void FileSystemManager::PrintDrivesList()
     {
@@ -58,12 +103,14 @@ namespace fsManager
         char NameBuffer[MAX_PATH];
         DWORD serial;
         char fsName[MAX_PATH];
+        DWORD fsFlags = 0;
         // fixme добавить вывод системных флагов
-        GetVolumeInformationA(driveName.c_str(), NameBuffer, MAX_PATH, &serial, NULL, NULL, fsName, MAX_PATH);
+        GetVolumeInformationA(driveName.c_str(), NameBuffer, MAX_PATH, &serial, NULL, &fsFlags, fsName, MAX_PATH);
 
         printf("Volume name: %s\n", NameBuffer);
         printf("Volume serial number: %d\n", serial);
         printf("Filesystem name: %s\n", fsName);
+        PrintFlags(fsFlags);
 
         ULARGE_INTEGER totalBytes;
         ULARGE_INTEGER freeBytes;

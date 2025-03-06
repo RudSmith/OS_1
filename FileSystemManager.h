@@ -9,6 +9,9 @@ namespace fsManager
 
     class FileSystemManager
     {
+    private:
+        // добавлена функция для вывода fileSystemFlags
+        static void PrintFlags(DWORD flags);
     public:
         // Lists all available drives on the screen
         static void PrintDrivesList();
@@ -34,6 +37,7 @@ namespace fsManager
         static int SetFileLastWriteTime(std::filesystem::path path, time_t time);
         // Sets the creation time of the file, returns 1 if fails
         static int SetFileCreationTime(std::filesystem::path path, time_t time);
+
     };
 
 }
